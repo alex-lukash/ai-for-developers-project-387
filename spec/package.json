@@ -1,0 +1,16 @@
+{
+  "name": "spec",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "tspMain": "api.tsp",
+  "scripts": {
+    "compile": "tsp compile ."
+  },
+  "devDependencies": {
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/openapi": "latest",
+    "@typespec/openapi3": "latest"
+  }
+}
