@@ -36,6 +36,9 @@ Always use the root **`Makefile`** targets — do not hand-run `tsp`, `prism`, o
 | `make build` | `tsc -b && vite build` |
 | `make lint` | ESLint |
 | `make test` | `vitest run` |
+| `make dev-api` | Run Vite against the **real backend** (assumes the backend is up) |
+| `make e2e` | Run the Playwright e2e suite (boots backend + frontend itself) |
+| `make e2e-install` | One-time: install the Chromium browser for the e2e runner |
 
 ## Mock data
 
@@ -79,11 +82,49 @@ to regenerate the OpenAPI document and the TypeScript client before relying on t
 - No `enum` — use zod unions or `as const` (`erasableSyntaxOnly` is on).
 - Prefix intentionally unused parameters with `_` (`noUnusedParameters` is on).
 
+## Running against the real backend
+
+The generated client calls **relative** `/api/...` (`src/api/client.ts`:
+`basePath = import.meta.env.VITE_API_BASE_URL ?? '/api'`), and the Vite dev proxy
+forwards `/api` to whatever `VITE_API_TARGET` points at. By default that's the Prism
+mock (`:4010`, prefix stripped). To run the SPA against the **real Spring backend**
+instead of the mock:
+
+1. Start the backend in one terminal: `make backend-run` (serves `:8080`, base path `/api`).
+2. In another terminal: `make dev-api` — runs Vite with
+   `VITE_API_TARGET=http://localhost:8080 VITE_API_KEEP_PREFIX=true` (keeps the `/api`
+   prefix, since the backend already mounts under it).
+
+Because the browser only ever calls the same-origin `/api` and the **proxy** reaches
+the backend, there is **no CORS** to configure. Do not set `VITE_API_BASE_URL` for this
+(an absolute URL would make the browser call `:8080` cross-origin). `make dev` (Prism
+mock) is unchanged.
+
 ## Testing
 
 - Stack: Vitest + React Testing Library + MSW.
 - Tests live next to their source as `*.test.ts(x)`; MSW handlers (hermetic, not Prism) live under `src/test/`.
 - Run with `make test`. New features must ship with tests.
+
+## End-to-end tests (Playwright)
+
+Durable e2e specs in `frontend/e2e/*.spec.ts` (`@playwright/test`) drive a real browser
+through the **whole stack** (Spring backend + H2, reached via the Vite proxy as above).
+
+- **Run:** `make e2e-install` once (installs Chromium), then `make e2e`. The
+  `playwright.config.ts` `webServer` block boots both the backend (`gradlew bootRun`)
+  and the frontend (`npm run dev:backend`) itself, so no manual setup is needed; it
+  reuses already-running servers locally.
+- **Serial by design:** the backend is a single in-memory H2 with the global
+  non-overlap rule (the owner can't be double-booked), so the config runs
+  `workers: 1` / `fullyParallel: false`. H2 resets on each backend restart
+  (`create-drop`); within one run, specs stay independent by picking the **first
+  available slot dynamically** and using **unique slugs** (`e2e-…-${Date.now()}`).
+- **Authoring/debugging:** use the **Playwright MCP server** (`browser_navigate`,
+  `browser_snapshot`, `browser_click`, `browser_fill_form`, `browser_console_messages`)
+  to walk a flow against the live stack and capture exact roles/labels, then encode it
+  into a spec. This is the Playwright analog of the chrome-devtools flow below.
+- New user-visible flows should get or extend an e2e spec.
 
 ## Verifying behaviour
 

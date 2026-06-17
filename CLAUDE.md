@@ -4,9 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository status
 
-This is a starter scaffold for a Hexlet educational project (course "AI for developers"). It contains **no application source code yet** — only project metadata, CI wiring, and a domain specification (see below). The project's language, build tooling, and test framework are not yet established and will be added as the course is completed.
+A Hexlet educational project (course "AI for developers") — a heavily simplified Cal.com clone. The domain/API is specified in TypeSpec (`spec/`) and code is generated from it on both ends:
 
-When source code first lands, update this file with the real build / lint / test commands and architecture notes.
+- **`frontend/`** — TypeScript + Vite (React 19). Build rules: [`frontend/AGENTS.md`](frontend/AGENTS.md).
+- **`backend/`** — Kotlin + Spring Boot + H2 (in-memory). Build rules: [`backend/AGENTS.md`](backend/AGENTS.md).
+- **`spec/`** — TypeSpec → `spec/dist/openapi.yaml`, the single source of truth consumed by both ends.
+
+Per-stack build / lint / test commands and conventions live in each `AGENTS.md`; the root `Makefile` is the single entry point (frontend targets plus `backend-build` / `backend-test` / `backend-run`).
+
+**Full-stack & e2e.** The frontend can run against the real backend instead of the Prism mock: `make backend-run` (terminal 1) + `make dev-api` (terminal 2) — same-origin via the Vite proxy, no CORS. Durable Playwright e2e tests live in `frontend/e2e/`; run them with `make e2e` (after `make e2e-install` once), which boots both servers and exercises the whole stack. Details in [`frontend/AGENTS.md`](frontend/AGENTS.md).
+
+**CI.** Our tests run on every push/PR via [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — three jobs: `frontend` (lint + Vitest + build), `backend` (Gradle tests), `e2e` (Playwright, full stack). This is separate from the auto-generated `hexlet-check.yml` (Hexlet grading), which must never be edited.
 
 ## Keeping these instructions current
 

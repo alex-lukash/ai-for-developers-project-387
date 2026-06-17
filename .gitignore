@@ -23,6 +23,12 @@ pnpm-debug.log*
 coverage/
 .nyc_output/
 
+# Playwright (e2e reports + MCP browser scratch dir)
+.playwright-mcp/
+test-results/
+playwright-report/
+blob-report/
+
 # OS files
 .DS_Store
 Thumbs.db

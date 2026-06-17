@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:backend": "VITE_API_TARGET=http://localhost:8080 VITE_API_KEEP_PREFIX=true vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -13,7 +14,9 @@
     "mock:dynamic": "prism mock ../spec/dist/openapi.yaml -p 4010 --dynamic",
     "dev:all": "concurrently -k -n mock,web \"npm:mock\" \"vite\"",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.9",
@@ -38,6 +41,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.0",
     "@stoplight/prism-cli": "^5.15.11",
     "@tailwindcss/vite": "^4.3.1",
     "@testing-library/dom": "^10.4.1",
