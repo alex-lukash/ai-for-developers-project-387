@@ -1,0 +1,12 @@
+# Keep the build context small and free of host build state.
+.git
+**/node_modules
+**/dist
+**/build
+**/.gradle
+backend/bin
+frontend/e2e
+frontend/test-results
+frontend/playwright-report
+**/*.log
+.DS_Store
