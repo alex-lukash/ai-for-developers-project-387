@@ -1,3 +1,9 @@
+server:
+  # Listen on the port from the PORT env var (used by deploy + the Hexlet check);
+  # default to 8080 for local runs. Spring binds SERVER_PORT, not PORT, by default,
+  # so the placeholder is required.
+  port: ${PORT:8080}
+
 spring:
   application:
     name: backend
