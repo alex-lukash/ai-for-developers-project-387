@@ -1,8 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "packages": {
-    "frontend": { "release-type": "node", "component": "frontend", "release-as": "0.1.0" },
-    "spec": { "release-type": "node", "component": "spec", "release-as": "0.1.0" },
-    "backend": { "release-type": "simple", "component": "backend", "release-as": "0.1.0" }
+    "frontend": { "release-type": "node", "component": "frontend" },
+    "spec": { "release-type": "node", "component": "spec" },
+    "backend": { "release-type": "simple", "component": "backend" },
+    ".": { "release-type": "simple", "component": "repo" }
   }
 }

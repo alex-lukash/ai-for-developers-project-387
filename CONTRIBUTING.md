@@ -49,9 +49,9 @@ Optional, but use one when it fits. Allowed scopes (enforced by commitlint):
 
 release-please routes each commit to a package by the **path of the files it changes**
 (`frontend/**` → the frontend package, `backend/**` → backend, `spec/**` → spec), so the
-scope is informational — keep it consistent with the area you touched. Changes to
-root/infra files (`.github/**`, `CONTRIBUTING.md`, …) don't belong to any package and
-don't trigger a release.
+scope is informational — keep it consistent with the area you touched. Root/infra files
+that match no deeper package (`Dockerfile`, `.github/**`, `CONTRIBUTING.md`, root configs,
+…) route to the **`repo`** package (path `"."`) and **do** trigger a release.
 
 ### Examples
 
@@ -86,3 +86,20 @@ Releases are automated by release-please. On every push to `main` it opens/updat
 **release PR** that bumps versions and updates `CHANGELOG.md` files based on the commits
 since the last release. Merging that PR creates the git tags and GitHub releases. You do
 not bump versions or write changelogs by hand — just write good Conventional Commits.
+
+Every package (including the repo root, the **`repo`** package) versions from its
+`0.1.0` baseline in `.release-please-manifest.json`.
+
+### Always bump the version
+
+Every shippable change must move a version. Because only **release-bumping types** advance
+the version (`feat` → minor, `fix`/`perf` → patch, breaking `!` → major) — `chore`, `docs`,
+`ci`, `build`, `refactor`, `test`, `style` bump **nothing** — that means:
+
+- Commit substantive work with `feat`/`fix`/`perf` (or a breaking `!`), not `chore`/`docs`.
+  Reserve the non-bumping types for genuinely release-irrelevant changes.
+- Every path now belongs to a package — `frontend`/`backend`/`spec` for their dirs, the
+  **`repo`** package (`"."`) for everything else — so even a root-only change (a `Dockerfile`
+  or CI tweak) bumps a version when committed with a bumping type.
+- **Never** add a `release-as` pin to `release-please-config.json`. It forces every release
+  to a fixed version and freezes versioning (this is exactly what stuck the repo at `0.1.0`).
