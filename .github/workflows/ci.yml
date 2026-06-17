@@ -20,6 +20,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  commitlint:
+    name: commitlint (Conventional Commits)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so the action can lint the whole PR/push range
+      # Validates commit messages against .commitlintrc.json (see CONTRIBUTING.md).
+      - uses: wagoid/commitlint-github-action@v6
+
   frontend:
     name: frontend (lint + unit + build)
     runs-on: ubuntu-latest

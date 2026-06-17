@@ -14,7 +14,9 @@ Per-stack build / lint / test commands and conventions live in each `AGENTS.md`;
 
 **Full-stack & e2e.** The frontend can run against the real backend instead of the Prism mock: `make backend-run` (terminal 1) + `make dev-api` (terminal 2) — same-origin via the Vite proxy, no CORS. Durable Playwright e2e tests live in `frontend/e2e/`; run them with `make e2e` (after `make e2e-install` once), which boots both servers and exercises the whole stack. Details in [`frontend/AGENTS.md`](frontend/AGENTS.md).
 
-**CI.** Our tests run on every push/PR via [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — three jobs: `frontend` (lint + Vitest + build), `backend` (Gradle tests), `e2e` (Playwright, full stack). This is separate from the auto-generated `hexlet-check.yml` (Hexlet grading), which must never be edited.
+**CI.** Our tests run on every push/PR via [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — jobs: `commitlint`, `frontend` (lint + Vitest + build), `backend` (Gradle tests), `e2e` (Playwright, full stack). This is separate from the auto-generated `hexlet-check.yml` (Hexlet grading), which must never be edited.
+
+**Commit conventions.** All commits **and PR titles** must follow [Conventional Commits](https://www.conventionalcommits.org/) — see [`CONTRIBUTING.md`](CONTRIBUTING.md) for the types, allowed scopes (`frontend`/`backend`/`spec`/`e2e`/`ci`/`deps`/`release`/`repo`), and breaking-change rules. This is enforced by commitlint in CI ([`.commitlintrc.json`](.commitlintrc.json)) and consumed by **release-please** ([`.github/workflows/release-please.yml`](.github/workflows/release-please.yml) + `release-please-config.json`) to version and changelog the three packages automatically. Write commits accordingly (the `Co-Authored-By:` trailer is a valid footer); never hand-bump versions or changelogs.
 
 ## Keeping these instructions current
 

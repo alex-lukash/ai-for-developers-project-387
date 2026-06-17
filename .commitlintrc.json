@@ -1,0 +1,10 @@
+{
+  "extends": ["@commitlint/config-conventional"],
+  "rules": {
+    "scope-enum": [
+      2,
+      "always",
+      ["frontend", "backend", "spec", "e2e", "ci", "deps", "release", "repo"]
+    ]
+  }
+}

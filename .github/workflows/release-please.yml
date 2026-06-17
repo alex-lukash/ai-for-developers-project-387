@@ -1,0 +1,29 @@
+# Automated releases via release-please (manifest mode).
+#
+# On every push to main, opens/updates a "release PR" that bumps versions and updates
+# CHANGELOGs from the Conventional Commits since the last release (see CONTRIBUTING.md).
+# Merging that PR creates the git tags + GitHub releases. Config lives in
+# release-please-config.json + .release-please-manifest.json (auto-detected).
+#
+# Separate from hexlet-check.yml (Hexlet grading — never edit it).
+#
+# NOTE: requires repo Settings -> Actions -> "Allow GitHub Actions to create and
+# approve pull requests" to be enabled, so GITHUB_TOKEN can open the release PR.
+
+name: release-please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
