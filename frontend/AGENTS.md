@@ -153,3 +153,9 @@ change. Treat documentation drift as part of the bug.
 - **Never** modify `.github/workflows/hexlet-check.yml` (auto-generated Hexlet CI/grading).
 - **Never** rename the repository.
 - `make gen` requires a **Java 11+** runtime; the committed `src/api/generated/` lets `make build`/CI run without Java.
+
+## Versioning
+
+This package (`frontend`) is versioned **independently** via release-please from
+[Conventional Commits](https://www.conventionalcommits.org/) — see [`../CONTRIBUTING.md`](../CONTRIBUTING.md).
+Never hand-bump `package.json`'s `version` or edit `CHANGELOG.md`; release-please owns both.

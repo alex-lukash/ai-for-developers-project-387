@@ -125,3 +125,9 @@ When you introduce something a future agent could not infer from this file or th
 alone — a new command, workflow step, convention, constraint, gotcha, or tool — update
 `AGENTS.md` (and root `CLAUDE.md` if it's repo-wide) in the same change. Treat
 documentation drift as part of the bug.
+
+## Versioning
+
+This package (`backend`) is versioned **independently** via release-please from
+[Conventional Commits](https://www.conventionalcommits.org/) — see [`../CONTRIBUTING.md`](../CONTRIBUTING.md).
+Never hand-bump the version or edit `CHANGELOG.md`; release-please owns both.

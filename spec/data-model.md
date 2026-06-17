@@ -174,3 +174,9 @@ entities**:
    busyness rule rejects it.
 6. Owner opens "upcoming meetings" → select `Booking`s of all types where
    `start_at >= now`, ordered by `start_at`, joined to `EventType` for the title.
+
+## Versioning
+
+This package (`spec`) is versioned **independently** via release-please from
+[Conventional Commits](https://www.conventionalcommits.org/) — see [`../CONTRIBUTING.md`](../CONTRIBUTING.md).
+Never hand-bump `package.json`'s `version` or edit `CHANGELOG.md`; release-please owns both.
